@@ -12,7 +12,12 @@ export $(shell sed 's/=.*//' $(cnf))
 
 .DEFAULT_GOAL := up
 
-.PHONY: up
+.PHONY: up down
 
 up:
-	docker compose up
+	docker-compose up -d && \
+	docker-compose logs -f
+
+down:
+	docker-compose down && \
+	:>docker_env

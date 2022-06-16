@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+APP_PATH=./shopware
+
 create_environment(){
     echo -e "Filling Environment Values:\n\n"
     echo "APP_ENV=\"dev\"" | tee -a .env && \
@@ -8,13 +10,13 @@ create_environment(){
     echo "DATABASE_URL=\"${DATABASE_URL}\""  | tee -a .env && \
     echo "APP_URL=\"http://localhost\""  | tee -a .env && \
     echo "MAILER_URL=\"smtp://localhost:1025\"" | tee -a .env && \
-    echo "COMPOSER_HOME=\"/var/www/html/var/cache/composer\""| tee -a .env && \
+    echo "COMPOSER_HOME=\"/var/cache/composer\""| tee -a .env && \
     echo "SHOPWARE_ES_ENABLED=\"0\""| tee -a .env
     echo -e "\n\n"
 }
 
 environment_exists(){
-    [ -r .env ]
+    [ -r .env ] && grep -q DATABASE_URL .env
 }
 
 show_n_execute() {
@@ -55,12 +57,14 @@ wait_mysql(){
 
 database_exists(){
     mysql -u${DB_USER} -p${DB_PASSWORD} -h${DB_HOST} ${DB_DBNAME} \
-        -Ne "SELECT 1" &>/dev/null 2>&1
+        -Ne "SELECT 1 FROM version" &>/dev/null 2>&1
 }
 
 main(){
     local -a args
     args=($@)
+
+    cd ${APP_PATH}
 
     pre_install;
     if ! environment_exists; then
@@ -86,10 +90,10 @@ main(){
     show_n_execute bin/ci cache:clear
     :>install.lock
 
-    exec php-fpm
+    exec apachectl -DFOREGROUND
 }
 
 if [[ "$0" == "${BASH_SOURCE}" ]]; then
-    set -x
+    # set -x
     main $@;
 fi
