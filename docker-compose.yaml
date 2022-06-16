@@ -1,0 +1,57 @@
+#override defaults for dev
+version: "3.7"
+
+services:
+   mysql:
+      image: allquantodevops/mysql:8
+      ports:
+         - 0.0.0.0:3306:3306
+      environment:
+         MYSQL_ROOT_PASSWORD: root
+         MYSQL_USER: app
+         MYSQL_PASSWORD: app
+      volumes:
+         - allquanto-dev-mysql:/mysql-data
+      networks:
+         shopware:
+
+   webserver:
+      image: webdevops/apache:alpine
+      ports: 
+         - 0.0.0.0:80:80
+         - 0.0.0.0:443:443 
+      volumes: 
+         - "${SHOPWARE_PATH}:/var/www/html"
+      environment:
+         WEB_PHP_SOCKET: "php:9000"
+         WEB_PHP_TIMEOUT: 600
+         WEB_DOCUMENT_ROOT: "/var/www/html/public"
+      networks:
+         shopware:
+            aliases:
+               - apache
+   php:
+      image: allquanto-shopware-dev/php:7.4
+      depends_on:
+         - mysql
+      build:
+         context: ./php
+         args:
+            - "UID=$USERID"
+            - "GID=$GROUPID"
+      volumes:
+         - "${SHOPWARE_PATH}:/var/www/html"
+         - "./php/entrypoint.sh:/usr/local/bin/docker-php-entrypoint"
+      environment:
+         DATABASE_URL: mysql://app:app@mysql:3306/shopware
+         PATH: "~/.composer/vendor/bin:${PATH}"
+         PHP_MEMORY_LIMIT: 2048M
+      networks:
+         shopware:
+
+volumes:
+  allquanto-dev-mysql:
+
+networks:
+  shopware:
+    driver: bridge
