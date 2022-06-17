@@ -40,7 +40,7 @@ get_db_access_data(){
 install_shopware() {
     echo -e "===> INSTALANDO SHOPWARE"
     show_n_execute bin/ci system:install --create-database -f
-    show_n_execute composer install
+    # show_n_execute composer install
     echo -e "===> CONCLUÍDO"
 }
 
