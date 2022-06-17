@@ -40,7 +40,8 @@ get_db_access_data(){
 install_shopware() {
     rm -f install.lock
     echo -e "===> INSTALANDO SHOPWARE"
-    show_n_execute bin/ci system:install --create-database -f
+    # show_n_execute bin/ci system:install --create-database -f
+    show_n_execute bin/ci system:install --create-database --basic-setup
     # show_n_execute composer install
     echo -e "===> CONCLUÍDO"
 }
