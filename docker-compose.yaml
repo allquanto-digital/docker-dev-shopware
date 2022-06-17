@@ -15,17 +15,17 @@ services:
       MYSQL_DATABASE: shopware
       MYSQL_USER: shopware
       MYSQL_PASSWORD: itsapassword
-    healthcheck:
-      test:
-        - mysqladmin
-        - ping
-        - -h 127.0.0.1
-        - -u shopware
-        - --password itsapassword
-      interval: 5s
-      timeout: 2s
-      retries: 3
-      start_period: 1m
+    # healthcheck:
+    #   test:
+    #     - mysqladmin
+    #     - ping
+    #     - -h 127.0.0.1
+    #     - -u shopware
+    #     - --password itsapassword
+    #   interval: 5s
+    #   timeout: 2s
+    #   retries: 3
+    #   start_period: 1m
   redis:
     image: redis:6-alpine
     networks:
