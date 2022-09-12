@@ -25,3 +25,15 @@ Utiliza-se o arquivo `.env` para configurar o ambiente.
 |USERID|$(id -u)|uid padrão para ser usado no container|
 |GROUPID|$(id -g)|gid padrão para ser usado no container|
 |PMA_PORT|Não definido|Porta que o phpmyadmin deve utilizar, se não estiver definido o valor é: **8080**|
+
+## Subindo o ambiente
+
+```
+make up
+```
+
+## Encerrando o ambiente
+
+```
+make down
+```
