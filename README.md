@@ -21,6 +21,7 @@ Utiliza-se o arquivo `.env` para configurar o ambiente.
 
 | Nome | Valor Padrão |Descrição|
 |------|--------------|---------|
-|LOCAL_PORT|Não definido|Porta que o backend irá escutar, se não estiver definido, usará a porta **80** por padrão
+|LOCAL_PORT|Não definido|Porta que o backend irá escutar, se não estiver definido, usará a porta **80** por padrão|
 |USERID|$(id -u)|uid padrão para ser usado no container|
 |GROUPID|$(id -g)|gid padrão para ser usado no container|
+|PMA_PORT|Não definido|Porta que o phpmyadmin deve utilizar, se não estiver definido o valor é: **8080**|
