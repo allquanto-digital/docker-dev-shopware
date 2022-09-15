@@ -87,6 +87,7 @@ main(){
         )
     else
         install_shopware
+        show_n_execute bin/ci system:generate-jwt-secret
     fi
 
     show_n_execute bin/ci cache:clear
