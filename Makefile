@@ -12,7 +12,7 @@ export $(shell sed 's/=.*//' $(cnf))
 
 .DEFAULT_GOAL := up
 
-.PHONY: up down
+.PHONY: up down get_pwaat
 
 up:
 	docker-compose up -d && \
@@ -21,3 +21,18 @@ up:
 down:
 	docker-compose down && \
 	:>docker_env
+
+get_pwaat:
+	docker exec -it \
+	shopware-mysql-1 \
+	mysql -uroot \
+		-pshhitsasecret \
+		-hmysql shopware \
+		-Ne \
+			"SELECT access_key \
+			FROM sales_channel, \
+			sales_channel_type \
+			WHERE \
+			sales_channel.type_id=sales_channel_type.id \
+			and sales_channel_type.icon_name='default-building-shop' \
+			LIMIT 1" 2>/dev/null
