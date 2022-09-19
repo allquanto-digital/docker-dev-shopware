@@ -57,7 +57,6 @@ services:
       - "${PWA_PATH:-./front}:/home/app/pwa"
       - ./pwa/config_js_extras:/home/app/config_js_extras
       - ./pwa/config_js_exports:/home/app/config_js_exports
-      - ./pwa/env:/home/app/.env
       - ./pwa/entrypoint.sh:/home/app/entrypoint.sh
     environment:
       SHOPWARE_ACCESSTOKEN: "${PWA_AT}"
