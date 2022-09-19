@@ -14,8 +14,8 @@ start(){
     cd ${APP_PATH};
     yarn
     yarn shopware-pwa domains --ci
-    yarn build
-    yarn start
+    yarn shopware-pwa plugins
+    yarn dev
 }
 
 main (){
