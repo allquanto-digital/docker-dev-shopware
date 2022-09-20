@@ -23,8 +23,8 @@ down:
 	:>docker_env
 
 get_pwaat:
-	docker exec -it \
-	shopware-mysql-1 \
+	docker-compose exec \
+	mysql \
 	mysql -uroot \
 		-pshhitsasecret \
 		-hmysql shopware \
