@@ -58,6 +58,7 @@ services:
       - ./pwa/config_js_extras:/home/app/config_js_extras
       - ./pwa/config_js_exports:/home/app/config_js_exports
       - ./pwa/entrypoint.sh:/home/app/entrypoint.sh
+      - ./pwa/env:/home/app/pwa/.env
     environment:
       SHOPWARE_ACCESSTOKEN: "${PWA_AT}"
     network_mode: service:shopware
