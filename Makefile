@@ -7,6 +7,12 @@ ifneq ($(shell test -e $(cnf) && echo -n yes), yes)
 	ERROR := $(error $(cnf) file not defined in current directory)
 endif
 
+DOCKERCOMPOSE=$(shell command -v docker-compose 2> /dev/null)
+
+ifndef
+	DOCKERCOMPOSE := docker compose
+endif
+
 include $(cnf)
 export $(shell sed 's/=.*//' $(cnf))
 
@@ -23,7 +29,7 @@ down:
 	:>docker_env
 
 get_pwaat:
-	docker-compose exec \
+	${DOCKERCOMPOSE} exec \
 	mysql \
 	mysql -uroot \
 		-pshhitsasecret \
