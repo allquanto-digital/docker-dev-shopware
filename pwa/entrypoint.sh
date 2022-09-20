@@ -10,11 +10,23 @@ create_config() {
         shopware-pwa.config.js
 }
 
+wait_domains(){
+    while ! yarn shopware-pwa domains --ci; do
+        sleep 2
+        echo "Aguardando executar domains"
+    done
+}
+
+plugins(){
+    source .env
+    yarn shopware-pwa plugins
+}
+
 start(){
     cd ${APP_PATH};
     yarn
-    yarn shopware-pwa domains --ci
-    yarn shopware-pwa plugins
+    wait_domains 2>/dev/null
+    plugins
     yarn dev
 }
 
