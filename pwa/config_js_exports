@@ -1,6 +1,6 @@
 module.exports = {
-  shopwareEndpoint: "http://shopware",
+  shopwareEndpoint: "http://localhost",
   shopwareAccessToken: "SHOPWARE_ACCESSTOKEN",
-  shopwareDomainsAllowList: ["http://shopware", "http://shopware/de"],
+  shopwareDomainsAllowList: ["http://localhost:3000", "http://localhost:3000/de"],
   defaultLanguageCode: "de-DE"
 };
