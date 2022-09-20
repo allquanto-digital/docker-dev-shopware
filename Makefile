@@ -21,11 +21,11 @@ export $(shell sed 's/=.*//' $(cnf))
 .PHONY: up down get_pwaat
 
 up:
-	docker-compose up -d && \
-	docker-compose logs -f
+	${DOCKERCOMPOSE} up -d && \
+	${DOCKERCOMPOSE} logs -f
 
 down:
-	docker-compose down && \
+	${DOCKERCOMPOSE} down && \
 	:>docker_env
 
 get_pwaat:
