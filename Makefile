@@ -7,9 +7,9 @@ ifneq ($(shell test -e $(cnf) && echo -n yes), yes)
 	ERROR := $(error $(cnf) file not defined in current directory)
 endif
 
-DOCKERCOMPOSE=$(shell command -v docker-compose 2> /dev/null)
+DOCKERCOMPOSE=$(shell docker-compose &> /dev/null && echo docker-compose)
 
-ifndef
+ifndef DOCKERCOMPOSE
 	DOCKERCOMPOSE := docker compose
 endif
 
