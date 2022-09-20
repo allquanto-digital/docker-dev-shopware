@@ -42,3 +42,9 @@ get_pwaat:
 			sales_channel.type_id=sales_channel_type.id \
 			and sales_channel_type.icon_name='default-building-shop' \
 			LIMIT 1" 2>/dev/null
+
+pluginlist:
+	${DOCKERCOMPOSE} exec \
+	-w /home/app/shopware \
+	shopware \
+	bin/ci plugin:list
