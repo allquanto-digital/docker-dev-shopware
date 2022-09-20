@@ -27,7 +27,7 @@ get_pwaat:
 	mysql \
 	mysql -uroot \
 		-pshhitsasecret \
-		-hmysql shopware \
+		shopware \
 		-Ne \
 			"SELECT access_key \
 			FROM sales_channel, \
