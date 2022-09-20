@@ -34,8 +34,10 @@ services:
       - shopware
   shopware:
     image: tatsuryu/shopw64
+    hostname: shopware
     ports:
-      - 0.0.0.0:${LOCAL_PORT:-80}:80
+      - 0.0.0.0:${LOCAL_PORT:-80}:${LOCAL_PORT:-80}
+      - 0.0.0.0:${PWA_PORT:-3000}:${PWA_PORT:-3000}
     volumes:
       - ./entrypoint.sh:/usr/bin/entrypoint
       - "${SHOPWARE_PATH:-./}:/home/app/shopware"
@@ -51,8 +53,6 @@ services:
       - redis
   pwa:
     image: tatsuryu/shoppwa
-    ports:
-      - 0.0.0.0:${PWA_PORT:-3000}:3000
     volumes:
       - "${PWA_PATH:-./front}:/home/app/pwa"
       - ./pwa/config_js_extras:/home/app/config_js_extras
@@ -60,11 +60,9 @@ services:
       - ./pwa/entrypoint.sh:/home/app/entrypoint.sh
     environment:
       SHOPWARE_ACCESSTOKEN: "${PWA_AT}"
-    networks:
-      - shopware
+    network_mode: service:shopware
     depends_on:
       - shopware
-
 
 volumes:
   shopware_db:
