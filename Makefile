@@ -48,3 +48,10 @@ pluginlist:
 	-w /home/app/shopware \
 	shopware \
 	bin/ci plugin:list
+
+activatepwa:
+	${DOCKERCOMPOSE} exec \
+	-w /home/app/shopware \
+	shopware \
+	bin/ci plugin:activate \
+	SwagShopwarePwa
