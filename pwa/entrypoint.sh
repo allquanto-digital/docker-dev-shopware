@@ -11,8 +11,8 @@ create_config() {
 }
 
 wait_domains(){
-    while ! yarn shopware-pwa domains --ci; do
-        sleep 2
+    while ! yarn shopware-pwa domains --ci &>-; do
+        sleep 5
         echo "Aguardando executar domains"
     done
 }
@@ -25,15 +25,17 @@ plugins(){
 start(){
     cd ${APP_PATH};
     yarn
-    wait_domains 2>/dev/null
+    wait_domains
     plugins
     yarn dev
 }
 
 main (){
     APP_PATH=${APP_PATH:-"/home/app/pwa"}
-    # SHOPWARE_ENDPOINT=${SHOPWARE_ENDPOINT?"Necessário informar o ENDPOINT"}
+    
+    [[ ${#SHOPWARE_ACCESSTOKEN} == 0 ]] && unset SHOPWARE_ACCESSTOKEN;
     SHOPWARE_ACCESSTOKEN=${SHOPWARE_ACCESSTOKEN?"Necessário informar o ACCESSTOKEN"}
+    
     cd ${APP_PATH}
 
     create_config;

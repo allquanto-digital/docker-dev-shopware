@@ -62,8 +62,6 @@ services:
     environment:
       SHOPWARE_ACCESSTOKEN: "${PWA_AT}"
     network_mode: service:shopware
-    depends_on:
-      - shopware
 
 volumes:
   shopware_db:
