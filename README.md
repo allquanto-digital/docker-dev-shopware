@@ -35,6 +35,21 @@ Utiliza-se o arquivo `.env` para configurar o ambiente.
 make up
 ```
 
+### Passos adicionais
+
+Ao subir o ambiente pela primeira vez, pode ser necessário em outro terminal usar os seguintes comandos:
+
+```
+make get_pwaat
+```
+
+Para coletar a access token do backend após oback ter subido, só então você configura em o **PWA_AT** em `.env`.
+
+```
+make activatepwa
+```
+Para ativar o plugin SwagShopwarePwa.
+
 ## Encerrando o ambiente
 
 ```
