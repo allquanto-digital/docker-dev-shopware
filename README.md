@@ -5,6 +5,7 @@
 - Make
 - Docker
 - caminho local para um repositório de backend
+- caminho local para o um repositório de frontend
 
 ## Configurando o ambiente
 
