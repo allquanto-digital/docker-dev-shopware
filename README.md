@@ -1,5 +1,7 @@
 # Ambiente de desenvolvimento Shopware
 
+TLDR, siga o passo a passo [aqui](#passo-a-passo)
+
 ## Pré-requisitos
 
 - Make
@@ -56,3 +58,59 @@ Para ativar o plugin SwagShopwarePwa.
 ```
 make down
 ```
+
+### Passo a Passo
+
+Baixar os repositórios de backend e de frontend, e pegar o caminho deles, **se estiver usando windows** já baixa no WSL, pois o caminho terá que ser ajustado de acordo com o caminho do WSL.
+
+Configurar o `.env` substituindo os caminhos do front e do back, bem como ajustar os branchs de cada repositório com o ambiente de desenvolvimento (normalmente _staging_), por exemplo digamos que baixei o backend e frontend nas pastas `/home/user/work/projects/shopware/backend` e `/home/user/work/projects/shopware/frontend` respectivamente.
+Configurar também o nome do cliente, por exemplo digamos que neste caso meu cliente é **clientX**
+
+```
+SHOPWARE_PATH=/home/user/work/projects/shopware/backend
+USERID=$(id -u)
+GROUPID=$(id -g)
+CLIENT=clientX
+PWA_PATH=/home/user/work/projects/shopware/frontend
+PWA_AT=
+```
+
+Após isso executar:
+
+```
+make
+```
+
+Este comando deve iniciar os containers e instalar todo o backend. Após o backend ser instalado totalmente, é possível coletar o ACCESS_TOKEN com o comando: `make get_pwaat`
+
+```
+make get_pwaat
++----------------------------+
+| AABBCCDDEEFFGGHHIIJJKKLLMM |
++----------------------------+
+```
+
+Este valor deve ser preenchido no `.env` em *PWA_AT*. Exemplo:
+
+```
+PWA_AT=AABBCCDDEEFFGGHHIIJJKKLLMM
+```
+
+Após isso executar:
+
+```
+make down
+make
+```
+
+E em outro terminal:
+
+```
+make activatepwa
+```
+
+Para ativar o plugin de Pwa no back.
+
+Após isso você deve conseguir acessar os ambientes em: http://localhost e http://localhost:3000 para o backend e frontend respectivamente.
+
+
