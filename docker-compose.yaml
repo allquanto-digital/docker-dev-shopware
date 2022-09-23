@@ -15,17 +15,6 @@ services:
       MYSQL_DATABASE: shopware
       MYSQL_USER: shopware
       MYSQL_PASSWORD: itsapassword
-    # healthcheck:
-    #   test:
-    #     - mysqladmin
-    #     - ping
-    #     - -h 127.0.0.1
-    #     - -u shopware
-    #     - --password itsapassword
-    #   interval: 5s
-    #   timeout: 2s
-    #   retries: 3
-    #   start_period: 1m
   pma:
     image: phpmyadmin:5-apache
     restart: always
@@ -45,13 +34,10 @@ services:
       - shopware
   shopware:
     image: tatsuryu/shopw64
-    # build:
-    #   context: ./shopware
-    #   args:
-    #     - "UID=${USERID:-1000}"
-    #     - "GID=${GROUPID:-1000}"
+    hostname: shopware
     ports:
-      - 0.0.0.0:${LOCAL_PORT:-80}:80
+      - 0.0.0.0:${LOCAL_PORT:-80}:${LOCAL_PORT:-80}
+      - 0.0.0.0:${PWA_PORT:-3000}:${PWA_PORT:-3000}
     volumes:
       - ./entrypoint.sh:/usr/bin/entrypoint
       - "${SHOPWARE_PATH:-./}:/home/app/shopware"
@@ -65,7 +51,17 @@ services:
     depends_on:
       - mysql
       - redis
-
+  pwa:
+    image: tatsuryu/shoppwa
+    volumes:
+      - "${PWA_PATH:-./front}:/home/app/pwa"
+      - ./pwa/config_js_extras:/home/app/config_js_extras
+      - ./pwa/config_js_exports:/home/app/config_js_exports
+      - ./pwa/entrypoint.sh:/home/app/entrypoint.sh
+      - ./pwa/env:/home/app/pwa/.env
+    environment:
+      SHOPWARE_ACCESSTOKEN: "${PWA_AT}"
+    network_mode: service:shopware
 
 volumes:
   shopware_db:
