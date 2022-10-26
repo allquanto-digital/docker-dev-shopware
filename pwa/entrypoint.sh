@@ -19,7 +19,7 @@ wait_domains(){
 
 plugins(){
     source .env
-    yarn shopware-pwa plugins
+    yarn shopware-pwa plugins --ci
 }
 
 start(){
