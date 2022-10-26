@@ -7,17 +7,51 @@ ifneq ($(shell test -e $(cnf) && echo -n yes), yes)
 	ERROR := $(error $(cnf) file not defined in current directory)
 endif
 
+DOCKERCOMPOSE := $(shell which docker-compose)
+
+ifndef DOCKERCOMPOSE
+	DOCKERCOMPOSE := docker compose
+endif
+
 include $(cnf)
 export $(shell sed 's/=.*//' $(cnf))
 
 .DEFAULT_GOAL := up
 
-.PHONY: up down
+.PHONY: up down get_pwaat
 
 up:
-	docker-compose up -d && \
-	docker-compose logs -f
+	${DOCKERCOMPOSE} up -d && \
+	${DOCKERCOMPOSE} logs -f
 
 down:
-	docker-compose down && \
+	${DOCKERCOMPOSE} down && \
 	:>docker_env
+
+get_pwaat:
+	${DOCKERCOMPOSE} exec \
+	mysql \
+	mysql -uroot \
+		-pshhitsasecret \
+		shopware \
+		-Ne \
+			"SELECT access_key \
+			FROM sales_channel, \
+			sales_channel_type \
+			WHERE \
+			sales_channel.type_id=sales_channel_type.id \
+			and sales_channel_type.icon_name='default-building-shop' \
+			LIMIT 1" 2>/dev/null
+
+pluginlist:
+	${DOCKERCOMPOSE} exec \
+	-w /home/app/shopware \
+	shopware \
+	bin/ci plugin:list
+
+activatepwa:
+	${DOCKERCOMPOSE} exec \
+	-w /home/app/shopware \
+	shopware \
+	bin/ci plugin:activate \
+	SwagShopwarePwa

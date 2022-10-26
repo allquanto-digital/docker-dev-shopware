@@ -4,6 +4,9 @@ APP_PATH=./shopware
 
 create_environment(){
     echo -e "Filling Environment Values:\n\n"
+    echo "# Do not change this file, this is generated file, and" | \
+        tee -a .env && \
+    echo "# all changes will be lost" | tee -a .env && \
     echo "APP_ENV=\"dev\"" | tee -a .env && \
     echo "APP_SECRET=\"1\""  | tee -a .env && \
     echo "INSTANCE_ID=\"1\""  | tee -a .env && \
@@ -87,6 +90,7 @@ main(){
         )
     else
         install_shopware
+        show_n_execute bin/ci system:generate-jwt-secret
     fi
 
     show_n_execute bin/ci cache:clear
