@@ -51,14 +51,21 @@ services:
     depends_on:
       - mysql
       - redis
+  # pwa:
+  #   image: tatsuryu/shoppwa
+  #   volumes:
+  #     - "${PWA_PATH:-./front}:/home/app/pwa"
+  #     - ./pwa/config_js_extras:/home/app/config_js_extras
+  #     - ./pwa/config_js_exports:/home/app/config_js_exports
+  #     - ./pwa/entrypoint.sh:/home/app/entrypoint.sh
+  #     - ./pwa/env:/home/app/pwa/.env
+  #   environment:
+  #     SHOPWARE_ACCESSTOKEN: "${PWA_AT}"
+  #   network_mode: service:shopware
   pwa:
     image: tatsuryu/shoppwa
     volumes:
-      - "${PWA_PATH:-./front}:/home/app/pwa"
-      - ./pwa/config_js_extras:/home/app/config_js_extras
-      - ./pwa/config_js_exports:/home/app/config_js_exports
-      - ./pwa/entrypoint.sh:/home/app/entrypoint.sh
-      - ./pwa/env:/home/app/pwa/.env
+      - ./pwa/p2.sh:/home/app/entrypoint.sh
     environment:
       SHOPWARE_ACCESSTOKEN: "${PWA_AT}"
     network_mode: service:shopware
