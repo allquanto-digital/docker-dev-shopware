@@ -22,10 +22,15 @@ plugins(){
     yarn shopware-pwa plugins --ci
 }
 
+snippets(){
+    yarn shopware-pwa snippets --export --ci
+}
+
 start(){
     cd ${APP_PATH};
     yarn
     wait_domains
+    snippets
     plugins
     yarn dev
 }
