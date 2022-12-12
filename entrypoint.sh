@@ -30,7 +30,15 @@ show_n_execute() {
 }
 
 pre_install(){
-    show_n_execute composer install --no-interaction --optimize-autoloader --no-scripts
+    show_n_execute composer install \
+        --no-interaction --optimize-autoloader --no-scripts
+     show_n_execute composer install \
+        --working-dir vendor/shopware/recovery \
+        --no-interaction --no-scripts
+    show_n_execute composer install \
+        --working-dir=vendor/shopware/recovery/Common \
+        --no-interaction \
+        --optimize-autoloader --no-suggest
 }
 
 get_db_access_data(){
@@ -43,9 +51,10 @@ get_db_access_data(){
 install_shopware() {
     rm -f install.lock
     echo -e "===> INSTALANDO SHOPWARE"
-    # show_n_execute bin/ci system:install --create-database -f
-    show_n_execute bin/ci system:install --create-database --basic-setup
-    # show_n_execute composer install
+    show_n_execute bin/ci system:install \
+        --shop-locale=${SHPW_LANGUAGE:-"de-DE"} \
+        --shop-currency=${SHPW_CURRENCY:-"CHF"} \
+        --create-database --basic-setup
     echo -e "===> CONCLUÍDO"
 }
 
