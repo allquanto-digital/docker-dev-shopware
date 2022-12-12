@@ -59,6 +59,7 @@ Para ativar o plugin SwagShopwarePwa.
 make down
 ```
 
+
 # Passo a Passo
 
 ## Caso estiver usando windows, tudo deve ser feito dentro do [WSL2](https://medium.com/marcelo-albuquerque/como-instalar-o-wsl-2-no-windows-10-3e26d99d7161).
@@ -71,6 +72,7 @@ Mude a branch de ambos para `staging`.
 
 ## Configurando o `.env`
 Seu arquivo `.env` deve ter uma estrutura parecida com essa:
+
 ```
 SHOPWARE_PATH=/home/user/work/projects/shopware/backend
 USERID=$(id -u)
@@ -79,6 +81,7 @@ CLIENT=clientX
 PWA_PATH=/home/user/work/projects/shopware/frontend
 PWA_AT=
 ```
+
 Substitua as variaveis *SHOPWARE_PATH* e *PWA_PATH* com o caminho do diretório dos projetos de backend e frontend, respectivamente.
 Substitua *CLIENT* pelo nome do cliente no qual você está trabalhando.
 
@@ -90,6 +93,7 @@ Dentro do diretório do projeto `DOCKER-DEV-SHOPWARE`, abra um terminal e execut
 ```
 make
 ```
+
 
 Este comando deve iniciar os containers e instalar todo o backend.
 
@@ -111,6 +115,7 @@ Este valor deve ser preenchido no `.env` em *PWA_AT*. Exemplo:
 ```
 PWA_AT=AABBCCDDEEFFGGHHIIJJKKLLMM
 ```
+
 
 ## Montando ambiente do frontend
 Agora que nosso backend está todo configurado e nosso `.env` todo preenchido vamos montar o ambiente do frontend.
@@ -134,6 +139,6 @@ make activatepwa
 
 Para ativar o plugin de Pwa no back.
 
-Após isso você deve conseguir acessar os ambientes em: http://localhost/admin e http://localhost:3000 para o backend e frontend respectivamente.
 
+Após isso você deve conseguir acessar os ambientes em: http://localhost/admin e http://localhost:3000 para o backend e frontend respectivamente.
 
