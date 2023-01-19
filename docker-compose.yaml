@@ -42,8 +42,8 @@ services:
       - 0.0.0.0:${PWA_PORT:-3000}:${PWA_PORT:-3000}
     volumes:
       - ./entrypoint.sh:/usr/bin/entrypoint
-      - "${SHOPWARE_PATH:-./}:/home/app/shopware"
-      - ./docker_env:/home/app/shopware/.env
+      - "${SHOPWARE_PATH:-./}:/home/node/app"
+      - ./docker_env:/home/node/app/.env
       - ./config/php.ini:/etc/php7/conf.d/php.ini
     environment:
       DATABASE_URL: mysql://shopware:itsapassword@mysql:3306/shopware
