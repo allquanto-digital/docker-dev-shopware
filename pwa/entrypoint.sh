@@ -11,7 +11,7 @@ create_config() {
 }
 
 wait_domains(){
-    while ! yarn shopware-pwa domains --ci &>-; do
+    while ! yarn shopware-pwa domains --ci >&-; do
         sleep 5
         echo "Aguardando executar domains"
     done

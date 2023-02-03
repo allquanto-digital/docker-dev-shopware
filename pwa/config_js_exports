@@ -1,9 +1,10 @@
 const defaultsConfigBuilder =
   require("@shopware-pwa/nuxt-module/api-defaults").default;
 
-  defaultsConfigBuilder().add("useNavigation.includes.category",  "description");  
-  defaultsConfigBuilder().add("useNavigation.includes.category",  "media");  
-
+  defaultsConfigBuilder()
+  .add("useNavigation.includes.category",  ["description", "media"])
+  .add("useCms.includes.product", ["isNew" ,"product_delivery_options"])
+  
 module.exports = {
   shopwareEndpoint: "http://localhost",
   shopwareAccessToken: "SHOPWARE_ACCESSTOKEN",
