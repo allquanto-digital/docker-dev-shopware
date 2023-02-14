@@ -4,6 +4,7 @@ const defaultsConfigBuilder =
   defaultsConfigBuilder()
   .add("useNavigation.includes.category",  ["description", "media"])
   .add("useCms.includes.product", ["isNew" ,"product_delivery_options"])
+  .add("useListing.includes.product", ["customFields"]);
   
 module.exports = {
   shopwareEndpoint: "http://localhost",
