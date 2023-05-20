@@ -6,6 +6,8 @@ services:
     image: mysql:8-debian
     command:
       - --log_bin_trust_function_creators=1
+    ports:
+      - 0.0.0.0:3306:3306
     volumes:
       - shopware_db:/var/lib/mysql
     networks:
@@ -30,21 +32,35 @@ services:
       - mysql
   redis:
     image: redis:6-alpine
+    ports:
+    - 0.0.0.0:${CACHE_PORT:-6379}:${CACHE_PORT:-6379}
+    volumes:
+      - shopware_redis:/data
     networks:
       - shopware
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+    - 0.0.0.0:${MQ_PORT_API:-5672}:${MQ_PORT_API:-5672}
+    - 0.0.0.0:${MQ_PORT_UI:-15672}:${MQ_PORT_UI:-15672}
+    volumes:
+    - shopware_mq:/var/lib/rabbitmq/
+    networks:
+      - shopware
+    restart: always
   shopware:
     build:
       context: ${SHOPWARE_PATH}
       dockerfile: Dockerfile.dev
     hostname: shopware
     ports:
-      - 0.0.0.0:${LOCAL_PORT:-80}:${LOCAL_PORT:-80}
-      - 0.0.0.0:${PWA_PORT:-3000}:${PWA_PORT:-3000}
+      - 0.0.0.0:${LOCAL_PORT_DEV:-8081}:${LOCAL_PORT_DEV:-8081}
+      - 0.0.0.0:80:80
     volumes:
       - ./entrypoint.sh:/usr/bin/entrypoint
       - "${SHOPWARE_PATH:-./}:/home/node/app"
       - ./docker_env:/home/node/app/.env
-      - ./config/php.ini:/etc/php7/conf.d/php.ini
+      - ./config/php.ini:/etc/php/8.1/apache2/php.ini
     environment:
       DATABASE_URL: mysql://shopware:itsapassword@mysql:3306/shopware
     entrypoint: /usr/bin/entrypoint
@@ -53,6 +69,12 @@ services:
     depends_on:
       - mysql
       - redis
+      - rabbitmq
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 4G
   # pwa:
   #   image: tatsuryu/shoppwa
   #   volumes:
@@ -64,17 +86,21 @@ services:
   #   environment:
   #     SHOPWARE_ACCESSTOKEN: "${PWA_AT}"
   #   network_mode: service:shopware
-  pwa:
-    image: tatsuryu/shoppwa
-    volumes:
-      - ./pwa/p2.sh:/home/app/entrypoint.sh
-    environment:
-      SHOPWARE_ACCESSTOKEN: "${PWA_AT}"
-    network_mode: service:shopware
+  # pwa:
+  #   image: tatsuryu/shoppwa
+  #   volumes:
+  #     - ./pwa/p2.sh:/home/app/entrypoint.sh
+  #   environment:
+  #     SHOPWARE_ACCESSTOKEN: "${PWA_AT}"
+  #   network_mode: service:shopware
 
 volumes:
   shopware_db:
     name: shopware-${CLIENT:-dev}
+  shopware_redis:
+    name: shopware-redis-${CLIENT:-dev}
+  shopware_mq:
+    name: shopware-mq-${CLIENT:-dev}
 
 networks:
   shopware:

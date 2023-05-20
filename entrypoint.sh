@@ -9,12 +9,12 @@ create_environment(){
     echo "# all changes will be lost" | tee -a .env && \
     echo "APP_ENV=\"dev\"" | tee -a .env && \
     echo "APP_SECRET=\"1\""  | tee -a .env && \
-    echo "INSTANCE_ID=\"1\""  | tee -a .env && \
     echo "DATABASE_URL=\"${DATABASE_URL}\""  | tee -a .env && \
     echo "APP_URL=\"http://localhost\""  | tee -a .env && \
     echo "MAILER_URL=\"smtp://localhost:1025\"" | tee -a .env && \
     echo "COMPOSER_HOME=\"/var/cache/composer\""| tee -a .env && \
-    echo "SHOPWARE_ES_ENABLED=\"0\""| tee -a .env
+    echo "SHOPWARE_ES_ENABLED=\"0\""| tee -a .env && \
+    echo "APP_DEBUG=1"| tee -a .env
     echo -e "\n\n"
 }
 
@@ -22,7 +22,7 @@ environment_exists(){
     [ -r .env ] && grep -q DATABASE_URL .env
 }
 
-show_n_execute() {
+show_n_execute(){
     local -a args
     args=($@)
     echo -e "============> Executing: \n\t${args[@]}\n";
@@ -32,7 +32,7 @@ show_n_execute() {
 pre_install(){
     show_n_execute composer install \
         --no-interaction --optimize-autoloader --no-scripts
-     show_n_execute composer install \
+    show_n_execute composer install \
         --working-dir vendor/shopware/recovery \
         --no-interaction --no-scripts
     show_n_execute composer install \
@@ -48,7 +48,7 @@ get_db_access_data(){
         <<<$(echo ${BASH_REMATCH[@]:1})
 }
 
-install_shopware() {
+install_shopware(){
     rm -f install.lock
     echo -e "===> INSTALANDO SHOPWARE"
     show_n_execute bin/ci system:install \
@@ -92,8 +92,11 @@ main(){
     if database_exists; then
         local -a commands
         commands=(
+            "bin/ci database:migrate --all"
             "bin/ci system:generate-jwt-secret"
             "bin/ci dal:refresh:index"
+            "bin/build-administration.sh"
+            "bin/build-storefront.sh"
             "bin/ci assets:install"
             "bin/ci theme:compile"
         )
